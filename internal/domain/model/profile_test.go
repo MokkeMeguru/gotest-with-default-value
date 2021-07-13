@@ -33,6 +33,16 @@ func TestValidate(t *testing.T) {
 			},
 			wantErr: true,
 		},
+		{
+			name: "another man 2 (weak point)",
+			args: args{
+				profile: model.Profile{
+					FirstName: " ",
+					LastName:  " ",
+				},
+			},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
