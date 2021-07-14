@@ -58,3 +58,7 @@ func (m Profile) Validate() error {
 	}
 	return nil
 }
+
+func (m Profile) FullName() (string, error) {
+	return fmt.Sprintf("%s %s", m.LastName, m.FirstName), nil
+}
