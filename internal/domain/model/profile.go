@@ -24,16 +24,16 @@ const (
 )
 
 type Post struct {
-	Position string    `json:"position" testdata:"beginner"`
-	Field    PostField `json:"field" testdata:"0"`
+	Position string    `json:"position"`
+	Field    PostField `json:"field"`
 }
 
 type Profile struct {
-	FirstName     string         `json:"first_name" testdata:"Meguru"`
-	LastName      string         `json:"last_name" testdata:"Mokke"`
-	FavoriteFoods []Food         `json:"favorite_foods" testdata:"[\"curry\", \"ramen\"]"`
-	Skill         map[string]int `json:"skill" testdata:"{\"clojure\": 80, \"golang\": 1}"`
-	Post          *Post          `json:"post" testdata:"{}"`
+	FirstName     string         `json:"first_name"`
+	LastName      string         `json:"last_name"`
+	FavoriteFoods []Food         `json:"favorite_foods"`
+	Skill         map[string]int `json:"skill"`
+	Post          *Post          `json:"post"`
 }
 
 func (m Profile) Validate() error {

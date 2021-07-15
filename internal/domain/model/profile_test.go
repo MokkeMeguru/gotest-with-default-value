@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/MokkeMeguru/gotest-with-default-value/internal/domain/model"
+	model_fixture "github.com/MokkeMeguru/gotest-with-default-value/internal/domain/model/fixture"
 	"github.com/MokkeMeguru/gotest-with-default-value/pkg/testutil"
 	"github.com/xorcare/golden"
 )
@@ -22,27 +23,21 @@ func TestProfile_Validate(t *testing.T) {
 		{
 			name: "normal",
 			args: args{
-				profile: model.Profile{},
+				profile: model_fixture.Profile_Normal,
 			},
 			wantErr: false,
 		},
 		{
 			name: "another man",
 			args: args{
-				profile: model.Profile{
-					FirstName: "Potter",
-					LastName:  "Harry",
-				},
+				profile: model_fixture.Profile_AnotherMan,
 			},
 			wantErr: true,
 		},
 		{
-			name: "another man 2 (weak point)",
+			name: "empty man",
 			args: args{
-				profile: model.Profile{
-					FirstName: " ",
-					LastName:  " ",
-				},
+				profile: model_fixture.Profile_EmptyMan,
 			},
 			wantErr: true,
 		},
@@ -60,39 +55,31 @@ func TestProfile_Validate(t *testing.T) {
 }
 
 func TestProfile_FullName(t *testing.T) {
-	type fields struct {
-		FirstName     string
-		LastName      string
-		FavoriteFoods []model.Food
-		Skill         map[string]int
-		Post          *model.Post
-	}
 	tests := []struct {
 		name    string
-		fields  fields
+		m       model.Profile
 		want    string
 		wantErr bool
 	}{
 		{
 			name:    "normal",
-			fields:  fields{},
+			m:       model_fixture.Profile_Normal,
+			want:    "",
+			wantErr: false,
+		},
+		{
+			name:    "another man",
+			m:       model_fixture.Profile_AnotherMan,
 			want:    "",
 			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			m := model.Profile{
-				FirstName:     tt.fields.FirstName,
-				LastName:      tt.fields.LastName,
-				FavoriteFoods: tt.fields.FavoriteFoods,
-				Skill:         tt.fields.Skill,
-				Post:          tt.fields.Post,
-			}
-			if err := testutil.FillTestData(&m); err != nil {
+			if err := testutil.FillTestData(&tt.m); err != nil {
 				t.Errorf("test data filler failed: %v", err)
 			}
-			got, err := m.FullName()
+			got, err := tt.m.FullName()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Profile.FullName() error = %v, wantErr %v", err, tt.wantErr)
 				return
